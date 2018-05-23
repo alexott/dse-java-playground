@@ -13,11 +13,17 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jackson.version>2.9.0</jackson.version>
-    <java.dse.version>1.6.6</java.dse.version>
+    <java.dse.version>1.6.7</java.dse.version>
     <java.version>1.8</java.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.datastax.dse</groupId>
+      <artifactId>dse-spark-dependencies</artifactId>
+      <version>5.1.9</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
