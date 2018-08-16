@@ -15,13 +15,14 @@
     <jackson.version>2.9.0</jackson.version>
     <java.dse.version>1.6.7</java.dse.version>
     <java.version>1.8</java.version>
+    <scala.version>2.11.8</scala.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.datastax.dse</groupId>
       <artifactId>dse-spark-dependencies</artifactId>
-      <version>5.1.9</version>
+      <version>6.0.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -108,7 +109,7 @@
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
-        <version>3.2.2</version>
+        <version>3.4.2</version>
         <executions>
           <execution>
             <phase>process-sources</phase>
@@ -116,6 +117,9 @@
               <goal>compile</goal>
               <goal>testCompile</goal>
             </goals>
+            <configuration>
+              <scalaVersion>${scala.version}</scalaVersion>
+            </configuration>
 <!--            <configuration>
               <mainSourceDir>${project.build.sourceDirectory}/../scala</mainSourceDir>
             </configuration> -->
