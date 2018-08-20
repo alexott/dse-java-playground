@@ -1,4 +1,4 @@
-package com.datastax.demos.alexott.product;
+package com.datastax.alexott.demos.product;
 
 import java.util.List;
 import java.util.Map;

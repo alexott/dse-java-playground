@@ -1,4 +1,4 @@
-package com.datastax.demos.alexott.product;
+package com.datastax.alexott.demos.product;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.CodecRegistry;

@@ -1,4 +1,4 @@
-package com.datastax.demos.alexott.btest;
+package com.datastax.alexott.demos.btest;
 
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Cluster;
