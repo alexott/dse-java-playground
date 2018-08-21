@@ -10,7 +10,7 @@ import org.apache.spark.sql.{SparkSession, _}
 object DsefsDownloader {
   def main(args: Array[String]): Unit = {
     if (args.length < 2) {
-      println("Usage: DsefsUploader fileToUpload destination")
+      println("Usage: DsefsDownloader fileToDownload destination")
       System.exit(1)
     }
     val spark = SparkSession.builder().getOrCreate()
@@ -29,6 +29,10 @@ object DsefsDownloader {
 
     val fileSystem = FileSystem.get(spark.sparkContext.hadoopConfiguration)
     val path = new Path(args(0))
+    if (!fileSystem.isFile(path)) {
+      println("The '" + args(0) + "' is not a file!")
+      System.exit(1)
+    }
     val in = fileSystem.open(path)
     val out = new BufferedOutputStream(new FileOutputStream(outfile))
     IOUtils.copy(in, out)
