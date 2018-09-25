@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.datastax.dse</groupId>
       <artifactId>dse-spark-dependencies</artifactId>
-      <version>6.0.2</version>
+      <version>6.0.3</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -86,6 +86,11 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>0.14</version>
     </dependency>
 
     <dependency>
