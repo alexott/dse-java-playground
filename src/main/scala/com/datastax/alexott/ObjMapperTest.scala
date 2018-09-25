@@ -48,15 +48,15 @@ object ObjMapperTest {
     val session = cluster.connect()
     val manager = new MappingManager(session)
 
-    val mapperClass = manager.mapper(new TObj(1, "t", new java.util.Date()).getClass, "test")
+    val mapperClass = manager.mapper(classOf[TObj], "test")
     val objClass = mapperClass.get(new Integer(1))
     println("Obj(1)='" + objClass + "'")
 
-    val mapperCaseClass = manager.mapper(TObjC(1, "t", new java.util.Date()).getClass, "test")
+    val mapperCaseClass = manager.mapper(classOf[TObjC], "test")
     val objCaseClass = mapperCaseClass.get(new Integer(1))
     println("Obj(1)='" + objCaseClass + "'")
 
-    val mapperCaseClassRenamed = manager.mapper(TObjCR(1, "t", new java.util.Date()).getClass, "test")
+    val mapperCaseClassRenamed = manager.mapper(classOf[TObjCR], "test")
     val objCaseClassRenamed = mapperCaseClassRenamed.get(new Integer(1))
     println("Obj(1)='" + objCaseClassRenamed + "'")
 
