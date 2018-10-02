@@ -13,7 +13,7 @@ import javax.xml.transform.Result;
 import java.net.InetSocketAddress;
 import java.util.Collections;
 
-public class WHPolicyExample {
+public class WhiteListPolicyExample {
     static final int DSE_PORT = 9042;
 
     public static void main(String[] args) throws InterruptedException {
@@ -34,21 +34,18 @@ public class WHPolicyExample {
                 "create table whtest.whtest(id int primary key, t text);",
                 "create table whtest.whtest2(id int primary key, t text);"};
 
+        Metadata metadata = cluster.getMetadata();
         for (int i = 0; i < commands.length; i++) {
             System.out.println("Executing '" + commands[i] + "'");
             ResultSet rs = session.execute(commands[i]);
             if (!rs.getExecutionInfo().isSchemaInAgreement()) {
-                System.out.println("Schema isn't in agreement after exeuction of the '"
-                + commands[i] + "'... Exiting");
-                System.exit(1);
+                while (!metadata.checkSchemaAgreement()) {
+                    System.out.println("Schema isn't in agreement, sleep 1 second...");
+                    Thread.sleep(1000);
+                }
             }
         }
         // just to be sure, and to show that it could be done via Metadata as well
-        Metadata metadata = cluster.getMetadata();
-        while (!metadata.checkSchemaAgreement()) {
-            System.out.println("Schema isn't in agreement, sleep 1 second...");
-            Thread.sleep(1000);
-        }
         for (int i = 0; i < 5; i++) {
             session.execute(String.format("insert into whtest.whtest(id, t) values(%d, 'test %d');",i, i));
         }
