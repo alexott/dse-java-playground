@@ -21,9 +21,8 @@ public class DTestMain {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.findAndRegisterModules();
 		mapper.registerModule(new JavaTimeModule());
-		 
-		 
-		SolrClient client = new HttpSolrClient.Builder(url).build();
+
+		SolrClient client = new HttpSolrClient(url);
 		SolrQuery query = new SolrQuery();
 		query.setQuery("*:*");
 		query.addFilterQuery("id:1");

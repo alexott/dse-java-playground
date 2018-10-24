@@ -19,10 +19,26 @@
   </properties>
 
   <dependencies>
-    <dependency>
+<!--    <dependency>
       <groupId>com.datastax.dse</groupId>
       <artifactId>dse-spark-dependencies</artifactId>
-      <version>6.0.3</version>
+      <version>6.0.4</version>
+      <scope>provided</scope>
+      </dependency> -->
+    <dependency>
+      <groupId>com.datastax.dse</groupId>
+      <artifactId>dse-byos_2.11</artifactId>
+      <version>6.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_2.11</artifactId>
+      <version>2.3.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_2.11</artifactId>
+      <version>2.3.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -90,13 +106,13 @@
     <dependency>
       <groupId>com.github.javafaker</groupId>
       <artifactId>javafaker</artifactId>
-      <version>0.14</version>
+      <version>0.16</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.solr</groupId>
       <artifactId>solr-solrj</artifactId>
-      <version>6.6.0</version>
+      <version>6.0.1</version>
     </dependency>
   </dependencies>
 
@@ -128,6 +144,24 @@
 <!--            <configuration>
               <mainSourceDir>${project.build.sourceDirectory}/../scala</mainSourceDir>
             </configuration> -->
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
