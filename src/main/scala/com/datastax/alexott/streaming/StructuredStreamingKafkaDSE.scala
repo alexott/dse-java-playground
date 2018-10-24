@@ -28,7 +28,7 @@ object StructuredStreamingKafkaDSE {
 
     val tweetDF = streamingInputDF.selectExpr("CAST(value AS STRING)")
       .select(from_json($"value", schema).as("tweet"))
-      .select(current_timestamp().as("created_at").cast(TimestampType),
+      .select(unix_timestamp($"tweet.created_at", "EEE MMM dd HH:mm:ss Z yyyy").as("created_at").cast(TimestampType),
         $"tweet.lang".as("lang"))
 
     val streamingCountsDF =  tweetDF
