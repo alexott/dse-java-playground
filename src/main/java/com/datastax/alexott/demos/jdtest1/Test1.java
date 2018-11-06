@@ -1,7 +1,5 @@
 package com.datastax.alexott.demos.jdtest1;
 
-import java.util.Set;
-
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ColumnDefinitions.Definition;
 import com.datastax.driver.core.DataType;
@@ -9,6 +7,8 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.util.Set;
 
 public class Test1 {
 	public static void main(String[] args) throws JsonProcessingException {
