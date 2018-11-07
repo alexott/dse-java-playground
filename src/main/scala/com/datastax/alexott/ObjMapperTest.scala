@@ -4,6 +4,9 @@ import com.datastax.driver.mapping.annotations.{Column, PartitionKey, Table}
 
 import scala.annotation.meta.field
 
+// create table test.scala_test(id int primary key, t text, tm timestamp);
+// insert into test.scala_test(id,t,tm) values (1,'t1','2018-11-07T00:00:00Z') ;
+
 
 @Table(name = "scala_test")
 class TObj {
@@ -44,7 +47,7 @@ object ObjMapperTest {
 
   def main(args: Array[String]): Unit = {
 
-    val cluster = Cluster.builder().addContactPoint("127.0.0.1").build();
+    val cluster = Cluster.builder().addContactPoint("192.168.0.10").build();
     val session = cluster.connect()
     val manager = new MappingManager(session)
 
@@ -59,6 +62,8 @@ object ObjMapperTest {
     val mapperCaseClassRenamed = manager.mapper(classOf[TObjCR], "test")
     val objCaseClassRenamed = mapperCaseClassRenamed.get(new Integer(1))
     println("Obj(1)='" + objCaseClassRenamed + "'")
+
+    mapperCaseClassRenamed.save(TObjCR(2, "test 2", new java.util.Date()))
 
     session.close()
     cluster.close()
