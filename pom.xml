@@ -122,6 +122,13 @@
     </dependency>
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>DataStax-Repo</id>
+      <url>https://repo.datastax.com/public-repos/</url>
+    </repository>
+  </repositories>
+  
   <build>
     <plugins>
       <plugin>
