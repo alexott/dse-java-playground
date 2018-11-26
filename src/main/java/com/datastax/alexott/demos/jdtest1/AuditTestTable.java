@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+// create table test.audit_test(id int primary key, u test.audit_type, s set<text>, l list<text>, m map<int, text>);
 @Table(keyspace="test", name="audit_test")
 public class AuditTestTable {
 

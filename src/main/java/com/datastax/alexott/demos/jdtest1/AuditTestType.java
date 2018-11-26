@@ -2,6 +2,7 @@ package com.datastax.alexott.demos.jdtest1;
 
 import com.datastax.driver.mapping.annotations.UDT;
 
+// create type test.audit_type(id int, t text);
 @UDT(keyspace="test", name="audit_type")
 public class AuditTestType {
     int id;
