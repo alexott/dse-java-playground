@@ -48,7 +48,7 @@ public class JoinTests {
                 .load();
 
         Dataset<Row> joined = toJoin.join(dataset,
-                toJoin.col("id").equalTo(dataset.col("id")));
+                dataset.col("id").equalTo(toJoin.col("id")));
         joined.printSchema();
         joined.explain();
         joined.show(10);
