@@ -28,17 +28,8 @@ public class JoinTests {
 
 //        Dataset<Row> df = spark.sql("select * from test.jtest");
 //        df.show();
-        JavaRDD<Row> toJoinRDD = spark
-                .range(1, 1000)
-                .javaRDD()
-                .map((Function<Long, Row>) x -> {
-                    return RowFactory.create(x.intValue());
-                });
+        Dataset<Row> toJoin = spark.range(1, 1000).selectExpr("cast(id as int) as id");
 
-        List<StructField> fields = new ArrayList<>();
-        fields.add(DataTypes.createStructField("id", DataTypes.IntegerType, true));
-        StructType schema = DataTypes.createStructType(fields);
-        Dataset<Row> toJoin = spark.createDataFrame(toJoinRDD, schema);
         toJoin.printSchema();
 //        toJoin.show();
 
