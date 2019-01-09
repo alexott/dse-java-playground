@@ -37,6 +37,7 @@ public class TokenRangesScan {
             TokenRange range = ranges.get(i);
             Token rangeStart = range.getStart();
             Token rangeEnd = range.getEnd();
+            System.out.println("i=" + i + ", start=" + rangeStart + ", end=" + rangeEnd);
             if (i == 0) {
                 queries.put(baseQuery + "token(id) <= " + minToken, minToken);
                 queries.put(baseQuery + "token(id) > " + rangeStart + " AND token(id) <= " + rangeEnd, rangeEnd);
@@ -57,7 +58,8 @@ public class TokenRangesScan {
             for (Row row: rs) {
                 rangeCount++;
             }
-            System.out.println("Processed range ending at " + entry.getValue() + ". Row count: " + rangeCount);
+            System.out.println("Processed range ending at " + entry.getValue() + ". Row count: "
+                    + rangeCount + ", query: \"" + entry.getKey() + "\"");
             rowCount += rangeCount;
         }
         System.out.println("Total row count: " + rowCount);
