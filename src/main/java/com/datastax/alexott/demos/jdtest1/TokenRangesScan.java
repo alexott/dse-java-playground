@@ -11,7 +11,9 @@ import com.datastax.driver.core.TokenRange;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // create table test.range_scan(id bigint, col1 int, col2 bigint, primary key(id, col1));
 
@@ -25,32 +27,37 @@ public class TokenRangesScan {
         Metadata metadata = cluster.getMetadata();
         List<TokenRange> ranges = new ArrayList(metadata.getTokenRanges());
         Collections.sort(ranges);
-        System.out.println("Processing " + ranges.size() + " token ranges...");
+        System.out.println("Processing " + (ranges.size()+1) + " token ranges...");
 
-        long rowCount = 0;
         Token minToken = ranges.get(0).getStart();
         String baseQuery = "SELECT id, col1 FROM test.range_scan WHERE ";
-        // Note: It could be speedup by using async queries, but for illustration it's ok
+        Map<String, Token> queries = new HashMap<>();
+        // generate queries for every range
         for (int i = 0; i < ranges.size(); i++) {
             TokenRange range = ranges.get(i);
             Token rangeStart = range.getStart();
             Token rangeEnd = range.getEnd();
-            final String whereCond;
             if (i == 0) {
-                whereCond = "token(id) <= " +  rangeEnd;
+                queries.put(baseQuery + "token(id) <= " + minToken, minToken);
+                queries.put(baseQuery + "token(id) > " + rangeStart + " AND token(id) <= " + rangeEnd, rangeEnd);
             } else if (rangeEnd.equals(minToken)) {
-                whereCond = "token(id) > " +  rangeStart;
+                queries.put(baseQuery + "token(id) > " + rangeStart, rangeEnd);
             } else {
-                whereCond = "token(id) > " + rangeStart + " AND token(id) <= " + rangeEnd;
+                queries.put(baseQuery + "token(id) > " + rangeStart + " AND token(id) <= " + rangeEnd, rangeEnd);
             }
-            SimpleStatement statement = new SimpleStatement(baseQuery + whereCond);
-            statement.setRoutingToken(rangeEnd);
+        }
+
+        // Note: It could be speedup by using async queries, but for illustration it's ok
+        long rowCount = 0;
+        for (Map.Entry<String, Token> entry: queries.entrySet()) {
+            SimpleStatement statement = new SimpleStatement(entry.getKey());
+            statement.setRoutingToken(entry.getValue());
             ResultSet rs = session.execute(statement);
             long rangeCount = 0;
             for (Row row: rs) {
                 rangeCount++;
             }
-            System.out.println("Processed range(" + range.getStart() + "," + rangeEnd + "]. Row count: " + rangeCount);
+            System.out.println("Processed range ending at " + entry.getValue() + ". Row count: " + rangeCount);
             rowCount += rangeCount;
         }
         System.out.println("Total row count: " + rowCount);
