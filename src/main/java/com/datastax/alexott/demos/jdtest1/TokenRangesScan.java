@@ -30,6 +30,7 @@ public class TokenRangesScan {
         long rowCount = 0;
         Token minToken = ranges.get(0).getStart();
         String baseQuery = "SELECT id, col1 FROM test.range_scan WHERE ";
+        // Note: It could be speedup by using async queries, but for illustration it's ok
         for (int i = 0; i < ranges.size(); i++) {
             TokenRange range = ranges.get(i);
             Token rangeStart = range.getStart();
