@@ -52,6 +52,7 @@ public class TokenRangesScan {
         long rowCount = 0;
         for (Map.Entry<String, Token> entry: queries.entrySet()) {
             SimpleStatement statement = new SimpleStatement(entry.getKey());
+            // !!! This function is available only in Java DSE driver !!!
             statement.setRoutingToken(entry.getValue());
             ResultSet rs = session.execute(statement);
             long rangeCount = 0;
