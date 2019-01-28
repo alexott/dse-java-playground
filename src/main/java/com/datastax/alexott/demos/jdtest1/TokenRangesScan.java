@@ -2,6 +2,7 @@ package com.datastax.alexott.demos.jdtest1;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Metadata;
+import com.datastax.driver.core.ProtocolVersion;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
@@ -50,10 +51,14 @@ public class TokenRangesScan {
 
         // Note: It could be speedup by using async queries, but for illustration it's ok
         long rowCount = 0;
+        // That is needed if OSS driver is used...
+        // ProtocolVersion protocolVersion = cluster.getConfiguration().getProtocolOptions().getProtocolVersion();
         for (Map.Entry<String, Token> entry: queries.entrySet()) {
             SimpleStatement statement = new SimpleStatement(entry.getKey());
-            // !!! This function is available only in Java DSE driver !!!
+            // !!! This function is available only in Java DSE driver, not OSS !!!
             statement.setRoutingToken(entry.getValue());
+            // for OSS driver, following code should be used
+            // statement.setRoutingKey(entry.getValue().serialize(protocolVersion));
             ResultSet rs = session.execute(statement);
             long rangeCount = 0;
             for (Row row: rs) {
