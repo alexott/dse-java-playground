@@ -28,6 +28,8 @@ public class UUIDTest {
         CassandraJavaRDD<UUIDData> uuids = javaFunctions(spark.sparkContext())
                 .cassandraTable("test", "utest", mapRowTo(UUIDData.class));
 
+        uuids.collect().forEach(System.out::println);
+
         JavaRDD<UUIDData> uuids2 = uuids.map(x -> new UUIDData(x.getId() + 10, x.getU()));
 
         CassandraJavaUtil.javaFunctions(uuids2)

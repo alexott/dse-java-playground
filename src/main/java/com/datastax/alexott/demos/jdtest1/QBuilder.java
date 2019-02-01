@@ -1,5 +1,6 @@
 package com.datastax.alexott.demos.jdtest1;
 
+import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.DataType;
@@ -54,7 +55,6 @@ public class QBuilder {
         for (Row row: rs) {
             System.out.println(row);
         }
-
 
         Statement updateStatement = QueryBuilder.update("test").with(set("t", "test 1"))
                 .and(set("x", 10)).where(eq("id", 1));

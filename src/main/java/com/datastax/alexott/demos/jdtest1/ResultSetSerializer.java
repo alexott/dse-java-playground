@@ -1,6 +1,9 @@
 package com.datastax.alexott.demos.jdtest1;
 
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.List;
 
 import com.datastax.driver.core.ColumnDefinitions;
@@ -13,6 +16,10 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 @SuppressWarnings("serial")
 public class ResultSetSerializer extends StdSerializer<ResultSet> {
+	private static final Base64.Encoder B64_ENCODER = Base64.getEncoder();
+	public static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ISO_INSTANT;
+	public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME;
+
 	public ResultSetSerializer() {
 		this(null);
 	}
@@ -21,11 +28,41 @@ public class ResultSetSerializer extends StdSerializer<ResultSet> {
 		super(t);
 	}
 
+	void handleCollection(Row row, int i, String name, DataType dt, JsonGenerator jgen) throws IOException {
+		jgen.writeStringField(name, row.getObject(i).toString());
+	}
+
+	// TODO: cache UDT definitions...
+
 	void writeItem(Row row, int i, String name, DataType dt, JsonGenerator jgen) throws IOException {
+		// TODO: use map lookup instead?
+		// TODO: how to handle UDTs correctly?
 		if (DataType.cboolean().equals(dt)) {
 			jgen.writeBooleanField(name, row.getBool(i));
-		} else if(DataType.cint().equals(dt)) {
+		} else if (DataType.cint().equals(dt)) {
 			jgen.writeNumberField(name, row.getInt(i));
+		} else if (DataType.cdouble().equals(dt)) {
+			jgen.writeNumberField(name, row.getDouble(i));
+		} else if (DataType.cfloat().equals(dt)) {
+			jgen.writeNumberField(name, row.getFloat(i));
+		} else if (DataType.counter().equals(dt) || DataType.bigint().equals(dt)) {
+			jgen.writeNumberField(name, row.getLong(i));
+		} else if (DataType.smallint().equals(dt)) {
+			jgen.writeNumberField(name, row.getShort(i));
+		} else if (DataType.tinyint().equals(dt)) {
+			jgen.writeNumberField(name, row.getByte(i));
+		} else if (DataType.timestamp().equals(dt)) {
+			String ts = TIMESTAMP_FORMATTER.format(row.getTimestamp(i).toInstant());
+			jgen.writeStringField(name, ts);
+		} else if (DataType.date().equals(dt)) {
+			jgen.writeStringField(name, row.getDate(i).toString());
+		} else if (DataType.time().equals(dt)) {
+			LocalTime tm = LocalTime.ofNanoOfDay(row.getTime(i));
+			jgen.writeStringField(name, TIME_FORMATTER.format(tm));
+		} else if (DataType.blob().equals(dt)) {
+			jgen.writeStringField(name, B64_ENCODER.encodeToString(row.getBytes(i).array()));
+		} else if (dt.isCollection()) {
+			handleCollection(row, i, name, dt, jgen);
 		} else {
 			jgen.writeStringField(name, row.getObject(i).toString());
 		}
@@ -43,7 +80,6 @@ public class ResultSetSerializer extends StdSerializer<ResultSet> {
 			names[i] = cdef.getName();
 			types[i] = cdef.getType();
 		}
-
 		jgen.writeStartArray();
 		for (Row row : rs) {
 			jgen.writeStartObject();
