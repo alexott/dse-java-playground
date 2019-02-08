@@ -23,14 +23,14 @@
     <dependency>
       <groupId>com.datastax.dse</groupId>
       <artifactId>dse-spark-dependencies</artifactId>
-      <version>6.0.4</version>
+      <version>6.0.5</version>
       <scope>provided</scope>
     </dependency>
-<!--    <dependency>
-      <groupId>com.datastax.dse</groupId>
-      <artifactId>dse-byos_2.11</artifactId>
-      <version>6.0.4</version>
-      </dependency> -->
+   <!-- <dependency> -->
+   <!--    <groupId>com.datastax.dse</groupId> -->
+   <!--    <artifactId>dse-byos_2.11</artifactId> -->
+   <!--    <version>6.0.5</version> -->
+   <!--    </dependency> -->
      <!-- <dependency> -->
      <!--   <groupId>com.datastax.spark</groupId> -->
      <!--   <artifactId>spark-cassandra-connector_2.11</artifactId> -->
