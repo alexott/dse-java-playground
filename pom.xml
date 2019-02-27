@@ -16,7 +16,7 @@
     <java.dse.version>1.8.0</java.dse.version>
     <java.version>1.8</java.version>
     <scala.version>2.11.8</scala.version>
-    <spark.version>2.2.1</spark.version>
+    <spark.version>2.2.3</spark.version>
   </properties>
 
   <dependencies>
