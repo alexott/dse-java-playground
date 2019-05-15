@@ -41,6 +41,7 @@ public class AlterTableWithChecks {
                 rs = session.execute(stmt);
             } catch (InvalidQueryException ex) {
                 String msg = ex.getMessage();
+                // THIS IS NOT RELIABLE!
                 if (!(COL_EXISTS.matcher(msg).find() ||
                         COL_DOESNT_EXIST.matcher(msg).find() ||
                         COL_DOESNT_EXIST_RENAME.matcher(msg).find() ||
