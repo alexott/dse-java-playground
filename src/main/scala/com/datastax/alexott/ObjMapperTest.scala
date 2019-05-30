@@ -41,10 +41,6 @@ class TableObject {
 
 @Table(name = "scala_test")
 class TableObjectImmutable(@PartitionKey id: Integer, t: String, tm: java.util.Date) {
-  def this() {
-    this(0, "", new java.util.Date())
-  }
-
   override def toString: String = {
     "{id=" + id + ", t='" + t + "', tm='" + tm + "'}"
   }
