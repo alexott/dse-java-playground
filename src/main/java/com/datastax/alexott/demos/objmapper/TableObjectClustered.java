@@ -1,20 +1,14 @@
 package com.datastax.alexott.demos.objmapper;
 
-import com.datastax.driver.mapping.annotations.ClusteringColumn;
-import com.datastax.driver.mapping.annotations.PartitionKey;
 import com.datastax.driver.mapping.annotations.Table;
 
 import java.util.Date;
 
 @Table(name = "scala_test_complex", keyspace = "test")
 public class TableObjectClustered {
-    @PartitionKey(value = 0)
     int p1 = 0;
-    @PartitionKey(value = 1)
     int p2 = 0;
-    @ClusteringColumn(value = 0)
     int c1 = 0;
-    @ClusteringColumn(value = 1)
     int c2 = 0;
     String t = "";
     Date tm = new Date();
