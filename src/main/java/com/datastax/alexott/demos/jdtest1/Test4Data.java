@@ -5,8 +5,8 @@ import com.datastax.driver.mapping.annotations.Column;
 import com.datastax.driver.mapping.annotations.PartitionKey;
 import com.datastax.driver.mapping.annotations.Table;
 
-
-// create table test.t4(id int, c int, t text, primary key(id, c));
+// create KEYSPACE if not exists test WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 3};
+// create table if not exists test.t4(id int, c int, t text, primary key(id, c));
 @Table(name = "t4", keyspace = "test")
 public class Test4Data {
     @PartitionKey
